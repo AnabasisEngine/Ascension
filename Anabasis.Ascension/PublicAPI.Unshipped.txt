@@ -1,0 +1,18 @@
+﻿#nullable enable
+abstract Anabasis.Ascension.AscensionGame.CreateInitialSceneAsync() -> Anabasis.Tasks.AnabasisTask<Anabasis.Core.IAnabasisContext!>
+Anabasis.Ascension.AscensionGame
+Anabasis.Ascension.AscensionGame.AscensionGame(Silk.NET.OpenGL.GL! gl) -> void
+Anabasis.Ascension.AscensionGame.CurrentScene.get -> Anabasis.Core.IAnabasisContext!
+Anabasis.Ascension.AscensionGame.CurrentScene.set -> void
+Anabasis.Ascension.AscensionGame.Gl.get -> Silk.NET.OpenGL.GL!
+Anabasis.Ascension.AscensionGame.SceneLoadStatus.get -> Anabasis.Ascension.SceneLoadStatus!
+Anabasis.Ascension.AscensionGame.SceneLoadTask.get -> System.Threading.Tasks.Task!
+Anabasis.Ascension.IAscensionScene
+Anabasis.Ascension.IAscensionScene.LoadAsync(System.IProgress<Anabasis.Ascension.SceneLoadStatus!>! progress) -> Anabasis.Tasks.AnabasisTask
+Anabasis.Ascension.SceneLoadStatus
+Anabasis.Ascension.SceneLoadStatus.SceneLoadStatus() -> void
+override Anabasis.Ascension.AscensionGame.LoadAsync() -> Anabasis.Tasks.AnabasisTask
+override Anabasis.Ascension.AscensionGame.Render() -> void
+override Anabasis.Ascension.AscensionGame.Update() -> void
+virtual Anabasis.Ascension.AscensionGame.RenderLoading() -> void
+virtual Anabasis.Ascension.AscensionGame.UpdateLoading() -> void
