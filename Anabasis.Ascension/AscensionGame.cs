@@ -1,27 +1,36 @@
-﻿using Anabasis.Core;
+﻿using System.Diagnostics.CodeAnalysis;
+using Anabasis.Core;
 using Anabasis.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using Silk.NET.OpenGL;
 
 namespace Anabasis.Ascension;
 
 public abstract class AscensionGame : AnabasisGame
 {
-    private IAnabasisContext? _currentScene;
-    
-    protected AscensionGame(GL gl) {
+    private readonly AscensionSupport  _support;
+    private          IAnabasisContext? _currentScene;
+
+    protected AscensionGame(GL gl, AscensionSupport support) {
+        _support = support;
         Gl = gl;
     }
+
     protected GL Gl { get; }
 
     protected IAnabasisContext CurrentScene {
         get => _currentScene!;
         set {
             // Unload previous scene if relevant
-            if (_currentScene is IAnabasisTaskAsyncDisposable d)
-                d.DisposeAsync().Forget();
-            else if (_currentScene is IDisposable s) 
-                s.Dispose();
-            
+            switch (_currentScene) {
+                case IAnabasisTaskAsyncDisposable d:
+                    d.DisposeAsync().Forget();
+                    break;
+                case IDisposable s:
+                    s.Dispose();
+                    break;
+            }
+
             // Set new scene and load
             _currentScene = value;
             if (value is IAscensionScene scene) {
@@ -33,6 +42,9 @@ public abstract class AscensionGame : AnabasisGame
         }
     }
 
+    protected T CreateScene<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(params object[] parameters)
+        where T : IAnabasisContext => ActivatorUtilities.CreateInstance<T>(_support.ServiceProvider, parameters);
+
     protected Task SceneLoadTask { get; private set; } = Task.CompletedTask;
     protected SceneLoadStatus SceneLoadStatus { get; private set; } = new();
 
@@ -43,7 +55,7 @@ public abstract class AscensionGame : AnabasisGame
     }
 
     public override void Update() {
-        if(!LoadTask.IsCompleted)
+        if (!LoadTask.IsCompleted)
             return;
         if (SceneLoadTask.IsCompleted) {
             SceneLoadTask.GetAwaiter().GetResult();
@@ -52,20 +64,17 @@ public abstract class AscensionGame : AnabasisGame
             UpdateLoading();
     }
 
-    protected virtual void UpdateLoading() {
-    }
+    protected virtual void UpdateLoading() { }
 
     public override void Render() {
-        if(!LoadTask.IsCompleted)
+        if (!LoadTask.IsCompleted)
             return;
         if (SceneLoadTask.IsCompleted) {
             SceneLoadTask.GetAwaiter().GetResult();
             CurrentScene.Render();
-        }
-        else
+        } else
             RenderLoading();
     }
 
-    protected virtual void RenderLoading() {
-    }
+    protected virtual void RenderLoading() { }
 }
