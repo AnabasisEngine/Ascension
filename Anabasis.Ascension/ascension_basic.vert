@@ -1,6 +1,7 @@
 #version 330 core
 layout (location = 0) in vec3 vPos;
-layout (location = 1) in vec2 vUv;
+layout (location = 1) in vec4 vColor;
+layout (location = 2) in vec2 vUv;
 
 layout (std140, row_major) uniform TransformMatrices {
     mat4 Model;
@@ -16,10 +17,12 @@ out gl_PerVertex
 out v_out
 {
     vec2 fUv;
+    vec4 fColor;
 } v_out;
 
 void main()
 {
     gl_Position = TransformMatrices.Projection * TransformMatrices.View * TransformMatrices.Model * vec4(vPos, 1.0);
     v_out.fUv = vUv;
+    v_out.fColor = vColor;
 }
