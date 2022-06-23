@@ -1,5 +1,5 @@
 using System.Numerics;
-using Anabasis.Core.Textures;
+using Anabasis.Core.Graphics.Textures;
 using Silk.NET.Maths;
 
 namespace Anabasis.Ascension;

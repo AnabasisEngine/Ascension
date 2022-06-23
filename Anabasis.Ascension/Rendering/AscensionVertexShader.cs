@@ -1,5 +1,5 @@
-using Anabasis.Core.Handles;
-using Anabasis.Core.Shaders;
+using Anabasis.Core.Graphics.Handles;
+using Anabasis.Core.Graphics.Shaders;
 using Anabasis.Tasks;
 using Silk.NET.OpenGL;
 
@@ -7,7 +7,7 @@ namespace Anabasis.Ascension.Rendering;
 
 public sealed class AscensionVertexShader : ITypedShaderStage<AscensionVertexShader>
 {
-    private const string VertexShaderResourcePath = "Anabasis.Ascension.ascension_basic.vert";
+    private const string VertexShaderResourcePath = "Anabasis.Ascension.BasicShaders.ascension_basic.vert";
     public ShaderProgram Program { get; }
     public ProgramHandle Handle => Program.Handle;
     public UseProgramStageMask StageMask => UseProgramStageMask.VertexShaderBit;

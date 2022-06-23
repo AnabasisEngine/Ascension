@@ -1,5 +1,5 @@
-using Anabasis.Core.Handles;
-using Anabasis.Core.Shaders;
+using Anabasis.Core.Graphics.Handles;
+using Anabasis.Core.Graphics.Shaders;
 using Anabasis.Tasks;
 using Silk.NET.OpenGL;
 

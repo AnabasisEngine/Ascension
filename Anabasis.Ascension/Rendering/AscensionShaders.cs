@@ -1,4 +1,4 @@
-using Anabasis.Core.Shaders;
+using Anabasis.Core.Graphics.Shaders;
 
 namespace Anabasis.Ascension.Rendering;
 

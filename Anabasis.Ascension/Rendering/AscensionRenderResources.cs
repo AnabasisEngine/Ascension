@@ -1,5 +1,6 @@
+using System.Buffers;
 using System.Runtime.InteropServices;
-using Anabasis.Core.Buffers;
+using Anabasis.Core.Graphics.Buffers;
 using Anabasis.Tasks;
 using Silk.NET.OpenGL;
 
@@ -22,24 +23,18 @@ public sealed class AscensionRenderResources : IDisposable
                 VertexShader.BindTransformsUniformBuffer((uint)_binding);
             })
             .Forget();
+        _memoryOwner = UniformBuffer.MapSlice<StandardTransformUniforms>(0, UniformBuffer.Length);
     }
     public GraphicsBuffer UniformBuffer { get; }
     public AscensionVertexShader VertexShader { get; private set; } = null!;
 
-    private          StandardTransformUniforms _transforms;
-    private readonly int                       _binding;
+    private readonly int                                     _binding;
+    private readonly IMemoryOwner<StandardTransformUniforms> _memoryOwner;
 
-    public StandardTransformUniforms Transforms {
-        get => _transforms;
-        set {
-            if(_transforms.Equals(value))
-                return;
-            _transforms = value;
-            UniformBuffer.Typed<StandardTransformUniforms>().Write(MemoryMarshal.CreateReadOnlySpan(ref _transforms, 1));
-        }
-    }
+    public ref StandardTransformUniforms Transforms => ref _memoryOwner.Memory.Span[0];
 
     public void Dispose() {
+        _memoryOwner.Dispose();
         UniformBuffer.Dispose();
         VertexShader.Dispose();
         _pools.UniformBufferBindingPool.Return(_binding);

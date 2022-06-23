@@ -4,7 +4,10 @@
         <ProjectReference Include="..\..\tools\ShaderGen\ShaderGen.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>
     <ItemGroup>
-      <None Remove="ascension_basic.vert" />
-      <EmbeddedResource Include="ascension_basic.vert" />
+      <EmbeddedResource Include="BasicShaders\ascension_basic.vert" />
     </ItemGroup>
+    <ItemGroup>
+        <InternalsVisibleTo Include="Anabasis.Ascension.Assimp" />
+    </ItemGroup>
+    <Import Project="..\..\ext\PooledObjects\Microsoft.CodeAnalysis.PooledObjects.projitems" Label="Shared" />
 </Project>
